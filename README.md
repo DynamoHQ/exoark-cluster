@@ -1,1 +1,505 @@
-# exoark-cluster
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK: Survival Ascended Cluster</title>
+    <style>
+        /* Base Reset & Variables */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            /* Seamlessly blends the background image into a solid dark void */
+            background-color: #0b0c10; 
+            /* Dual-layer background: Adds a dark shadow overlay over a high-res ASA dino wallpaper */
+            background-image: 
+                linear-gradient(rgba(11, 12, 16, 0.85), rgba(11, 12, 16, 0.92)), 
+                url('bg.png');
+            background-attachment: fixed; /* Parallax effect: The background stays still when scrolling */
+            background-position: center top;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #c5c6c7; 
+            line-height: 1.6; 
+        }
+
+        
+        /* Seamless Hero Banner Section */
+        .hero {
+            /* Removes the heavy black background so your wallpaper shows instantly */
+            background: transparent;
+            height: 55vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            /* Creates a premium glass finish directly under your titles */
+
+        }
+
+        .hero h1 { 
+            font-size: 3.5rem; 
+            color: #66fcf1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px; 
+            text-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); 
+        }
+        .hero p { 
+            font-size: 1.2rem; 
+            max-width: 650px; 
+            margin-bottom: 30px; 
+           color: #cccccc; /* Changed from #absolute to a clean greyish-white */
+}
+        
+        /* Container to align buttons side-by-side */
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Shared base styling for wide brand buttons */
+        .brand-btn {
+            height: 52px;
+            padding: 0 32px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            border-radius: 26px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .brand-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Discord Button Styling (Kept exactly as you like it) */
+        .discord-btn {
+            background: #5865F2;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+        }
+        .discord-btn:hover { 
+            background: #4752C4; 
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
+        }
+        .discord-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #ffffff;
+        }
+
+        /* Support Button Styling */
+        .support-btn {
+            background: #00457C;
+            color: #ffffff; /* Changed from gold to a clean, crisp white */
+            font-style: italic; /* Clean, recognizable premium slant */
+            box-shadow: 0 4px 15px rgba(0, 69, 124, 0.4);
+        }
+        .support-btn:hover {
+            background: #002C54;
+            box-shadow: 0 8px 25px rgba(0, 69, 124, 0.6);
+        }
+	
+        /* Vote Button Styling */
+        .vote-btn {
+            background: #d48316; /* Clean metallic amber/bronze */
+            color: #ffffff;
+            font-style: italic; /* Premium italic slant matching PayPal */
+            box-shadow: 0 4px 15px rgba(212, 131, 22, 0.3);
+        }
+        .vote-btn:hover {
+            background: #b86e0e; /* Slightly darker shift on hover */
+            box-shadow: 0 8px 25px rgba(212, 131, 22, 0.5);
+        }
+
+
+
+        /* Container Layout */
+        .container { 
+            max-width: 1200px; 
+            margin: -40px auto 60px auto; 
+            padding: 0 20px; 
+        }
+        
+        /* Responsive Live Server Cards Grid */
+        .section-title {
+            font-size: 1.8rem;
+            color: #66fcf1;
+            margin-bottom: 25px;
+            border-left: 4px solid #45f3ff;
+            padding-left: 12px;
+        }
+        .server-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 60px; 
+        }
+        .card { 
+            background: rgba(31, 40, 51, 0.65); /* Changed to 65% transparency */
+            backdrop-filter: blur(5px); /* Blurs the background dinos behind the card for readability */
+            border: 1px solid #2f3b4c; 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: #66fcf1;
+        }
+        .card h3 { 
+            margin-bottom: 15px; 
+            color: #fff;
+            font-size: 1.3rem;
+            border-bottom: 1px solid #2f3b4c; 
+            padding-bottom: 10px; 
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+        .label { color: #85929E; }
+        .status { font-weight: bold; }
+        .online { color: #2ecc71; }
+        .offline { color: #e74c3c; }
+        .loading { color: #f1c40f; font-style: italic; }
+
+        /* Cluster Settings Panels */
+        .info-panel { 
+            display: grid; 
+            background: rgba(21, 28, 36, 0.75); /* Changed to 75% transparency */
+            backdrop-filter: blur(5px);
+            border: 1px solid #232c37;
+            border-radius: 8px; 
+            padding: 35px; 
+        }
+        @media(max-width: 768px) { 
+            .info-panel { grid-template-columns: 1fr; gap: 30px; } 
+        }
+        .info-list { list-style: none; }
+        .info-list li { 
+            padding: 10px 0; 
+            border-bottom: 1px solid #232c37; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 1rem;
+        }
+        .info-list li span { color: #66fcf1; font-weight: bold; }
+	
+                /* Bottom Footer Area */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            margin-top: 60px;
+            border-top: 1px solid #1f2833;
+            background: rgba(11, 12, 16, 0.8);
+        }
+        
+        /* Balancing columns to keep the center container dead-locked */
+        .footer-left {
+            flex: 1;
+        }
+        .footer-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .footer-right {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #55606d;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+        }
+        .footer-links a {
+            color: #66fcf1;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .footer-links a:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            footer {
+                flex-direction: column;
+                gap: 20px;
+                padding: 30px 20px;
+            }
+            .footer-left { display: none; }
+            .footer-center { order: 1; }
+            .footer-right { order: 2; text-align: center; }
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Welcoming Hero Area -->
+    <header class="hero">
+        <h1>EXOARK CLUSTER NETWORK</h1>
+        <p>Welcome! Join the EXOARK community through Discord, help the cluster grow through voting and keep the worlds alive through your support.</p>
+		<p>Scroll down for cluster rates.</p>
+        
+        <!-- Interactive Button Container -->
+        <div class="hero-buttons">
+            
+            <!-- Discord Button (Perfect Version) -->
+            <a href="https://discord.gg" target="_blank" class="brand-btn discord-btn">
+                <svg xmlns="http://w3.org" viewBox="0 0 127.14 96.36">
+                    <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.18,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.71-11,68.6,68.6,0,0,1-10.57-5.1c.9-.65,1.76-1.34,2.58-2a75.14,75.14,0,0,0,72.82,0c.82.71,1.68,1.4,2.58,2a68.43,68.43,0,0,1-10.57,5.1,76.43,76.43,0,0,0,6.71,11,105.54,105.54,0,0,0,31.6-18.83C129.58,49.52,123.63,26.7,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.62,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,95.86,53,91,65.69,84.69,65.69Z"/>
+                </svg>
+                Discord
+            </a>
+
+            <!-- Brand New support Button (Zero Icons, Purely Clean text) -->
+            <a href="https://paypal.me" target="_blank" class="brand-btn support-btn">
+                PayPal
+            </a>
+
+            <!-- Vote For Us Button -->
+            <!-- Paste your specific tracking/voting website link below inside the href -->
+            <a href="https://ark-servers.net" target="_blank" class="brand-btn vote-btn">
+                Vote for ExoArk
+            </a>
+
+
+        </div>
+    </header>
+
+
+
+    <!-- Main Content Container -->
+    <main class="container">
+        
+        <h2 class="section-title">Live Server Cluster Status</h2>
+        <div class="server-grid">
+            
+            <!-- 1. Scorched Earth Card -->
+            <div class="card" id="srv-38554916">
+                <h3>Scorched Earth</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 2. Astraeos Card -->
+            <div class="card" id="srv-38554420">
+                <h3>Astraeos</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 3. Aberration Card -->
+            <div class="card" id="srv-38554918">
+                <h3>Aberration</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 4. Ragnarok Card -->
+            <div class="card" id="srv-38530969">
+                <h3>Ragnarok</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 5. The Center Card -->
+            <div class="card" id="srv-38554917">
+                <h3>The Center</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 6. The Island Card -->
+            <div class="card" id="srv-38554919">
+                <h3>The Island</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 7. Valguero Card -->
+            <div class="card" id="srv-38554445">
+                <h3>Valguero</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 8. Lost Colony Card -->
+            <div class="card" id="srv-38554920">
+                <h3>Lost Colony</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+            <!-- 9. Extinction Card -->
+            <div class="card" id="srv-38554921">
+                <h3>Extinction</h3>
+                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
+                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            </div>
+
+        </div>
+
+               <!-- Configurations Panel -->
+        <h2 class="section-title">Cluster Features & Configuration</h2>
+        <div class="info-panel" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+            
+            <!-- Left Column: All Cluster Rates & Settings -->
+            <div>
+                <!-- General Rates -->
+                <h3 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid #232c37; padding-bottom: 5px;">General & Rates</h3>
+                <ul class="info-list" style="margin-bottom: 25px;">
+                    <li>WIPE <span>NEVER</span></li>
+                    <li>XP Multiplier: <span>2x</span></li>
+                    <li>Farming Multiplier: <span>3x</span></li>
+                    <li>Max Wild Dino Level: <span>150</span></li>
+                    <li>Max Wyvern Level: <span>190</span></li>
+                </ul>
+                
+                <!-- Breeding Settings -->
+                <h3 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid #232c37; padding-bottom: 5px;">Dinos & Breeding</h3>
+                <ul class="info-list" style="margin-bottom: 25px;">
+                    <li>Taming Speed: <span>5x</span></li>
+                    <li>Egg Hatch Speed: <span>50x</span></li>
+                    <li>Mating Speed: <span>2x</span></li>
+                    <li>Mating Interval: <span>0.02x</span></li>
+                    <li>Baby Mature Speed: <span>10x</span></li>
+                    <li>Imprinting Amount: <span>10x</span></li>
+                    <li>Cuddle Interval: <span>0.125x</span></li>
+                    <li>Anyone Can Imprint: <span>Enabled</span></li>
+                </ul>
+
+                <!-- Stack Sizes -->
+                <h3 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid #232c37; padding-bottom: 5px;">Stack Sizes</h3>
+                <ul class="info-list">
+                    <li>Prime Meat: <span>30 / stack</span></li>
+                    <li>Prime Fish Meat: <span>30 / stack</span></li>
+                    <li>Raw Mutton: <span>30 / stack</span></li>
+                    <li>Giant Bee Honey: <span>30 / stack</span></li>
+                    <li>Organic Polymer: <span>50 / stack</span></li>
+                    <li>Tree Sap: <span>30 / stack</span></li>
+                </ul>
+            </div>
+
+            <!-- Right Column: Active Mods Only -->
+            <div>
+                <h3 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid #232c37; padding-bottom: 5px;">Active Mods</h3>
+                <ul class="info-list">
+                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Solo Farm Mod</a> <span>Active</span></li>
+                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Pelayori's Cryo Storage</a> <span>Active</span></li>
+                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Super Spyglass Plus</a> <span>Active</span></li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Footer Links -->
+    <footer>
+        <!-- Left Side: Empty space balancing the flex layout -->
+        <div class="footer-left"></div>
+
+        <!-- Center: Quick Links -->
+        <div class="footer-center">
+            <div class="footer-links">
+                <a href="https://discord.gg" target="_blank">Discord</a>
+                <a href="https://paypal.me" target="_blank">PayPal</a>
+                <a href="https://ark-servers.net" target="_blank">Vote Now</a>
+            </div>
+        </div>
+
+        <!-- Right Side: Far Right Licensing Text -->
+        <div class="footer-right">
+            © 2025 - <span id="current-year"></span> ExoArk Cluster Network.
+        </div>
+    </footer>
+
+
+    <!-- BattleMetrics Automated Fetch Script & Dynamic Year -->
+    <script>
+        // Array containing all your specific server IDs
+        const serverIds = [
+            '38554916', '38554420', '38554918', 
+            '38530969', '38554917', '38554919', 
+            '38554445', '38554920', '38554921'
+        ];
+
+        // Function to fetch individual server data from BattleMetrics API
+        async function fetchServerStatus(id) {
+            const cardEl = document.getElementById(`srv-${id}`);
+            if (!cardEl) return;
+            
+            const statusEl = cardEl.querySelector('.status');
+            const playersEl = cardEl.querySelector('.players');
+
+            try {
+                const response = await fetch(`https://battlemetrics.com{id}`);
+                if (!response.ok) throw new Error('API Error');
+                
+                const resData = await response.json();
+                const serverAttributes = resData.data.attributes;
+                
+                // Read exact status and active metrics
+                const isOnline = serverAttributes.status === 'online';
+                const currentPlayers = serverAttributes.players;
+                const maxPlayers = serverAttributes.maxPlayers;
+
+                // Update HTML interfaces dynamically
+                if (isOnline) {
+                    statusEl.textContent = 'Online';
+                    statusEl.className = 'status online';
+                } else {
+                    statusEl.textContent = 'Offline';
+                    statusEl.className = 'status offline';
+                }
+                playersEl.textContent = `${currentPlayers} / ${maxPlayers}`;
+
+            } catch (error) {
+                console.error(`Error loading metrics data for ID ${id}:`, error);
+                statusEl.textContent = 'Error';
+                statusEl.className = 'status offline';
+                playersEl.textContent = 'Offline';
+            }
+        }
+
+        // Runs automatically when the webpage is completely loaded
+        function initializePage() {
+            // 1. Automatically update the copyright year in the footer
+            const yearEl = document.getElementById('current-year');
+            if (yearEl) {
+                yearEl.textContent = new Date().getFullYear();
+            }
+
+            // 2. Loop through all mapped IDs and fetch statistics
+            serverIds.forEach(id => fetchServerStatus(id));
+        }
+
+        // Execute initialization immediately upon load
+        window.addEventListener('DOMContentLoaded', initializePage);
+    </script>
