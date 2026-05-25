@@ -456,9 +456,12 @@
             const playersEl = cardEl.querySelector('.players');
 //this is exact example from battlemetrics embed code src="https://cdn.battlemetrics.com/b/horizontal500x80px/38554916.html
             try {
-                // Fetching raw HTML template directly from the free public BattleMetrics CDN
-                const response = await fetch(`https://cdn.battlemetrics.com/b/horizontal500x80px/${id}.html`);
-                if (!response.ok) throw new Error('CDN Connection Error');
+                // Step 2: Define your precise blocked API endpoint
+                const apiUrl = `https://battlemetrics.com/${id}`;
+                
+                // Step 1 & 2 combined: Paste proxy prefix before your encoded API URL
+                const response = await fetch("https://corsproxy.io/?url=" + encodeURIComponent(apiUrl));
+                if (!response.ok) throw new Error('API Network Error');
                 
                 const htmlText = await response.text();
                 
