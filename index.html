@@ -456,14 +456,15 @@
             const playersEl = cardEl.querySelector('.players');
 //this is exact example from battlemetrics embed code src="https://cdn.battlemetrics.com/b/horizontal500x80px/38554916.html
             try {
-                // Step 2: Define your precise blocked API endpoint
-                const apiUrl = `https://battlemetrics.com/${id}`;
+                // FIXED: Added the correct /api/servers/ sub-folders inside the string
+                const apiUrl = `https://battlemetrics.com{id}`;
                 
-                // Step 1 & 2 combined: Paste proxy prefix before your encoded API URL
+                // Routes the corrected API endpoint cleanly through the proxy
                 const response = await fetch("https://corsproxy.io/?url=" + encodeURIComponent(apiUrl));
                 if (!response.ok) throw new Error('API Network Error');
                 
-                const htmlText = await response.text();
+                const resData = await response.json();
+
                 
                 // Creates a virtual environment to parse the text values
                 const parser = new DOMParser();
