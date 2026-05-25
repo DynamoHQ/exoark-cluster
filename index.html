@@ -272,7 +272,7 @@
             
             <!-- Discord Button (Perfect Version) -->
             <a href="https://discord.gg" target="_blank" class="brand-btn discord-btn">
-                <svg xmlns="http://w3.org" viewBox="0 0 127.14 96.36">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36">
                     <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.18,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.71-11,68.6,68.6,0,0,1-10.57-5.1c.9-.65,1.76-1.34,2.58-2a75.14,75.14,0,0,0,72.82,0c.82.71,1.68,1.4,2.58,2a68.43,68.43,0,0,1-10.57,5.1,76.43,76.43,0,0,0,6.71,11,105.54,105.54,0,0,0,31.6-18.83C129.58,49.52,123.63,26.7,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.62,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,95.86,53,91,65.69,84.69,65.69Z"/>
                 </svg>
                 Discord
@@ -411,9 +411,9 @@
             <div>
                 <h3 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid #232c37; padding-bottom: 5px;">Active Mods</h3>
                 <ul class="info-list">
-                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Solo Farm Mod</a> <span>Active</span></li>
-                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Pelayori's Cryo Storage</a> <span>Active</span></li>
-                    <li><a href="https://curseforge.com" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Super Spyglass Plus</a> <span>Active</span></li>
+                    <li><a href="https://www.curseforge.com/ark-survival-ascended/mods/solo-farm-mod" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Solo Farm Mod</a> <span>Active</span></li>
+                    <li><a href="https://www.curseforge.com/ark-survival-ascended/mods/cryopods" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Pelayori's Cryo Storage</a> <span>Active</span></li>
+                    <li><a href="https://www.curseforge.com/ark-survival-ascended/mods/super-spyglass-plus" target="_blank" style="color: #66fcf1; text-decoration: none; font-weight: bold;">Super Spyglass Plus</a> <span>Active</span></li>
                 </ul>
             </div>
 
@@ -428,7 +428,7 @@
         <!-- Center: Quick Links -->
         <div class="footer-center">
             <div class="footer-links">
-                <a href="https://discord.gg" target="_blank">Discord</a>
+                <a href="https://discord.gg/tYPSwc6dmT" target="_blank">Discord</a>
                 <a href="https://paypal.me" target="_blank">PayPal</a>
                 <a href="https://ark-servers.net" target="_blank">Vote Now</a>
             </div>
@@ -436,7 +436,7 @@
 
         <!-- Right Side: Far Right Licensing Text -->
         <div class="footer-right">
-            © 2025 - <span id="current-year"></span> ExoArk Cluster Network.
+            &copy; 2025 - 2025 - <span id="current-year"></span> ExoArk Cluster Network.
         </div>
     </footer>
 
@@ -448,51 +448,36 @@
             '38554445', '38554920', '38554921'
         ];
 
-        async function fetchServerStatus(id) {
-            const cardEl = document.getElementById(`srv-${id}`);
-            if (!cardEl) return;
-            
-            const statusEl = cardEl.querySelector('.status');
-            const playersEl = cardEl.querySelector('.players');
-//this is exact example from battlemetrics embed code src="https://cdn.battlemetrics.com/b/horizontal500x80px/38554916.html
-            try {
-                // FIXED: Added the correct /api/servers/ sub-folders inside the string
-                const apiUrl = `https://api.battlemetrics.com/servers/${id}`;
-                
-                // Routes the corrected API endpoint cleanly through the proxy
-                const response = await fetch("https://corsproxy.io/?url=" + encodeURIComponent(apiUrl));
-                if (!response.ok) throw new Error('API Network Error');
-                
-                const resData = await response.json();
+async function fetchServerStatus(id) {
+    const cardEl = document.getElementById(`srv-${id}`);
+    if (!cardEl) return;
 
-                
-                // Creates a virtual environment to parse the text values
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
-                
-                // Locates the exact player counter element inside the BattleMetrics source
-                const playersElement = doc.querySelector('dd[itemprop="playersOnline"]');
-                
-                if (playersElement) {
-                    const countText = playersElement.textContent.trim(); // Reads "0/70"
-                    
-                    statusEl.textContent = 'Online';
-                    statusEl.className = 'status online';
-                    playersEl.textContent = `${countText} Players`;
-                } else {
-                    // If player numbers are missing from the data layout, the server is offline
-                    statusEl.textContent = 'Offline';
-                    statusEl.className = 'status offline';
-                    playersEl.textContent = '0 / 70';
-                }
+    const statusEl = cardEl.querySelector('.status');
+    const playersEl = cardEl.querySelector('.players');
 
-            } catch (error) {
-                console.error(`Error loading metrics data for ID ${id}:`, error);
-                statusEl.textContent = 'Offline';
-                statusEl.className = 'status offline';
-                playersEl.textContent = '0 / 70';
-            }
+    try {
+        const response = await fetch(`https://api.battlemetrics.com/servers/${id}`);
+
+        if (!response.ok) {
+            throw new Error(`BattleMetrics error: ${response.status}`);
         }
+
+        const resData = await response.json();
+        const attrs = resData.data.attributes;
+
+        const isOnline = attrs.status === 'online';
+
+        statusEl.textContent = isOnline ? 'Online' : 'Offline';
+        statusEl.className = `status ${isOnline ? 'online' : 'offline'}`;
+
+        playersEl.textContent = `${attrs.players} / ${attrs.maxPlayers}`;
+    } catch (error) {
+        console.error(`Error loading metrics data for ID ${id}:`, error);
+        statusEl.textContent = 'Unavailable';
+        statusEl.className = 'status offline';
+        playersEl.textContent = '-- / --';
+    }
+}
 
         function initializePage() {
             // Fix copyright year auto-update
@@ -511,5 +496,3 @@
     </script>
 </body>
 </html>
-
-
