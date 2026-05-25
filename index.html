@@ -444,11 +444,19 @@
     <!-- BattleMetrics Automated Fetch Script & Dynamic Year -->
     <script>
         // Array containing all your specific server IDs
-        const serverIds = [
-            '38554916', '38554420', '38554918', 
-            '38530969', '38554917', '38554919', 
-            '38554445', '38554920', '38554921'
-        ];
+// DOUBLE CHECK THESE EXACT NUMBERS MATCH YOUR URLs:
+const serverIds = [
+    '38554916', // Scorched Earth
+    '38554420', // Astraeos
+    '38554918', // Aberration
+    '38530969', // Ragnarok
+    '38554917', // The Center
+    '38554919', // The Island
+    '38554445', // Valguero
+    '38554920', // Lost Colony
+    '38554921'  // Extinction
+];
+
 
         // Function to fetch individual server data from BattleMetrics API
         async function fetchServerStatus(id) {
@@ -496,8 +504,12 @@
                 yearEl.textContent = new Date().getFullYear();
             }
 
-            // 2. Loop through all mapped IDs and fetch statistics
-            serverIds.forEach(id => fetchServerStatus(id));
+            // 2. Loop through all IDs with a staggered 150ms delay to prevent API errors
+            serverIds.forEach((id, index) => {
+                setTimeout(() => {
+                    fetchServerStatus(id);
+                }, index * 150); // Spaces out requests safely
+            });
         }
 
         // Execute initialization immediately upon load
