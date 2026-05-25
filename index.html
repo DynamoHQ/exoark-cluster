@@ -436,7 +436,7 @@
 
         <!-- Right Side: Far Right Licensing Text -->
         <div class="footer-right">
-            © 2025 - <span id="current-year"></span> ExoArk Cluster Network..
+            © 2025 - <span id="current-year"></span> ExoArk Cluster Network.
         </div>
     </footer>
 
@@ -457,7 +457,7 @@
 //this is exact example from battlemetrics embed code src="https://cdn.battlemetrics.com/b/horizontal500x80px/38554916.html
             try {
                 // FIXED: Added the correct /api/servers/ sub-folders inside the string
-                const apiUrl = `https://battlemetrics.com{id}`;
+                const apiUrl = `https://api.battlemetrics.com/servers/${id}`;
                 
                 // Routes the corrected API endpoint cleanly through the proxy
                 const response = await fetch("https://corsproxy.io/?url=" + encodeURIComponent(apiUrl));
