@@ -468,10 +468,10 @@ const serverIds = [
 
             try {
                 // FIXED: Added the correct /api/servers/ path and the missing $ sign
-                const apiUrl = encodeURIComponent(`https://battlemetrics.com{id}`);
+                const apiUrl = encodeURIComponent(`https://www.battlemetrics.com/servers/arksa/${id}`);
                 
                 // FIXED: Added the missing /?url= and the missing $ sign to read the variable
-                const response = await fetch(`https://corsproxy.io{apiUrl}`);
+                const response = await fetch(`https://corsproxy.io/${apiUrl}`);
                 if (!response.ok) throw new Error('API Network Error');
                 
                 const resData = await response.json();
