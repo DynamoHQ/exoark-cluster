@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExoArk.eu Cluster | ARK: Survival Ascended PvP Servers</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0b0c10">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@800;900&display=swap" rel="stylesheet">
@@ -196,34 +202,65 @@
             margin: 8px 0;
             font-size: 0.95rem;
         }
-        .label { color: #85929E; }
+        .label { color: #b4c0ca; }
+        .players {
+            color: #d8e3e7;
+            font-weight: 700;
+        }
+        .current-players.low {
+            color: #f1c40f;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.22);
+        }
+        .current-players.medium {
+            color: #f39c12;
+            text-shadow: 0 0 12px rgba(243, 156, 18, 0.28);
+        }
+        .current-players.high {
+            color: #2ecc71;
+            text-shadow: 0 0 13px rgba(46, 204, 113, 0.3);
+        }
         .status { font-weight: bold; }
         .online { color: #2ecc71; }
         .offline { color: #e74c3c; }
         .loading { color: #f1c40f; font-style: italic; }
-        .connect-link {
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .connect-link,
+        .copy-ip-btn {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 42px;
-            margin-top: 18px;
-            padding: 0 18px;
+            min-height: 34px;
+            padding: 0 12px;
             border-radius: 6px;
-            border: 1px solid rgba(102, 252, 241, 0.35);
-            background: rgba(102, 252, 241, 0.08);
-            color: #66fcf1;
+            border: 1px solid rgba(102, 252, 241, 0.24);
+            background: rgba(102, 252, 241, 0.045);
+            color: rgba(102, 252, 241, 0.86);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 0.82rem;
+            font-weight: 650;
             transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
         }
-        .connect-link:hover {
-            border-color: rgba(102, 252, 241, 0.75);
-            background: rgba(102, 252, 241, 0.16);
-            color: #ffffff;
-            transform: translateY(-2px);
+        .connect-link {
+            flex: 1;
         }
-        .connect-link.disabled {
+        .copy-ip-btn {
+            flex: 0 0 auto;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .connect-link:hover,
+        .copy-ip-btn:hover {
+            border-color: rgba(102, 252, 241, 0.55);
+            background: rgba(102, 252, 241, 0.1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .connect-link.disabled,
+        .copy-ip-btn:disabled {
             pointer-events: none;
             opacity: 0.45;
         }
@@ -419,7 +456,10 @@
                 <h3>Scorched Earth</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 2. Astraeos Card -->
@@ -427,7 +467,10 @@
                 <h3>Astraeos</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 3. Aberration Card -->
@@ -435,7 +478,10 @@
                 <h3>Aberration</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 4. Ragnarok Card -->
@@ -443,7 +489,10 @@
                 <h3>Ragnarok</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 5. The Center Card -->
@@ -451,7 +500,10 @@
                 <h3>The Center</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 6. The Island Card -->
@@ -459,7 +511,10 @@
                 <h3>The Island</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 7. Valguero Card -->
@@ -467,7 +522,10 @@
                 <h3>Valguero</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 8. Lost Colony Card -->
@@ -475,7 +533,10 @@
                 <h3>Lost Colony</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
             <!-- 9. Extinction Card -->
@@ -483,7 +544,10 @@
                 <h3>Extinction</h3>
                 <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
                 <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
-                <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                <div class="card-actions">
+                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
+                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                </div>
             </div>
 
         </div>
@@ -578,6 +642,7 @@ async function fetchServerStatus(id) {
     const statusEl = cardEl.querySelector('.status');
     const playersEl = cardEl.querySelector('.players');
     const connectEl = cardEl.querySelector('.connect-link');
+    const copyIpEl = cardEl.querySelector('.copy-ip-btn');
 
     try {
         const response = await fetch(`https://api.battlemetrics.com/servers/${id}`);
@@ -594,7 +659,17 @@ async function fetchServerStatus(id) {
         statusEl.textContent = isOnline ? 'Online' : 'Offline';
         statusEl.className = `status ${isOnline ? 'online' : 'offline'}`;
 
-        playersEl.textContent = `${attrs.players} / ${attrs.maxPlayers}`;
+        let playerActivityClass = '';
+        if (attrs.players >= 15) {
+            playerActivityClass = 'high';
+        } else if (attrs.players >= 5) {
+            playerActivityClass = 'medium';
+        } else if (attrs.players > 0) {
+            playerActivityClass = 'low';
+        }
+
+        const currentPlayersClass = `current-players ${playerActivityClass}`.trim();
+        playersEl.innerHTML = `<span class="${currentPlayersClass}">${attrs.players}</span> / ${attrs.maxPlayers}`;
         const serverAddress = attrs.ip || attrs.address;
         if (serverAddress && attrs.port && connectEl) {
             const connectUrl = `steam://connect/${serverAddress}:${attrs.port}`;
@@ -604,24 +679,70 @@ async function fetchServerStatus(id) {
             connectEl.classList.remove('disabled');
             connectEl.removeAttribute('aria-disabled');
         }
+        if (serverAddress && copyIpEl) {
+            copyIpEl.dataset.ip = serverAddress;
+            copyIpEl.disabled = false;
+            copyIpEl.textContent = 'Copy IP';
+            copyIpEl.title = `Copy ${serverAddress}`;
+        }
     } catch (error) {
         console.error(`Error loading metrics data for ID ${id}:`, error);
         statusEl.textContent = 'Unavailable';
         statusEl.className = 'status offline';
         playersEl.textContent = '-- / --';
+        playersEl.className = 'players';
         if (connectEl) {
             connectEl.href = '#';
             connectEl.textContent = 'Connect unavailable';
             connectEl.classList.add('disabled');
             connectEl.setAttribute('aria-disabled', 'true');
         }
+        if (copyIpEl) {
+            copyIpEl.dataset.ip = '';
+            copyIpEl.disabled = true;
+            copyIpEl.textContent = 'Copy IP';
+            copyIpEl.title = 'IP unavailable';
+        }
     }
 }
+
+        async function copyServerIp(buttonEl) {
+            const ip = buttonEl.dataset.ip;
+            if (!ip) return;
+
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(ip);
+                } else {
+                    const tempInput = document.createElement('input');
+                    tempInput.value = ip;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    tempInput.remove();
+                }
+
+                buttonEl.textContent = 'Copied';
+                setTimeout(() => {
+                    buttonEl.textContent = 'Copy IP';
+                }, 1400);
+            } catch (error) {
+                console.error('Error copying server IP:', error);
+                buttonEl.textContent = 'Copy failed';
+                setTimeout(() => {
+                    buttonEl.textContent = 'Copy IP';
+                }, 1800);
+            }
+        }
 
         function initializePage() {
             // Fix copyright year auto-update
             const yearEl = document.getElementById('current-year');
             if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+
+            document.querySelectorAll('.copy-ip-btn').forEach((buttonEl) => {
+                buttonEl.addEventListener('click', () => copyServerIp(buttonEl));
+            });
 
             // Stagger requests slightly to keep browser connections stable
             serverIds.forEach((id, index) => {
