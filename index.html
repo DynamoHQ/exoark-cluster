@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARK: Survival Ascended Cluster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@800;900&display=swap" rel="stylesheet">
     <style>
         /* Base Reset & Variables */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +31,8 @@
         .hero {
             /* Removes the heavy black background so your wallpaper shows instantly */
             background: transparent;
+            position: relative;
+            overflow: hidden;
             height: 55vh;
             display: flex;
             flex-direction: column;
@@ -39,13 +44,33 @@
 
         }
 
+        .hero-dino {
+            display: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
         .hero h1 { 
+            font-family: 'Cinzel', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 3.5rem; 
-            color: #66fcf1;
+            font-weight: 900;
+            color: #d8fffb;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin-bottom: 15px; 
-            text-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); 
+            -webkit-text-stroke: 1px rgba(102, 252, 241, 0.45);
+            text-shadow:
+                0 2px 0 rgba(0, 0, 0, 0.95),
+                0 8px 18px rgba(0, 0, 0, 0.9),
+                0 0 20px rgba(102, 252, 241, 0.45);
         }
         .hero p { 
             font-size: 1.2rem; 
@@ -281,6 +306,34 @@
                 min-height: 70vh;
                 padding: 60px 20px;
             }
+            .hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                background: radial-gradient(circle at center, rgba(11, 12, 16, 0.2), rgba(11, 12, 16, 0.86) 72%);
+            }
+            .hero-dino {
+                display: block;
+                position: absolute;
+                z-index: 0;
+                bottom: 0;
+                max-width: none;
+                opacity: 0.72;
+                pointer-events: none;
+                filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.75));
+            }
+            .hero-dino.rex {
+                left: -42%;
+                width: 86%;
+            }
+            .hero-dino.bird {
+                right: -45%;
+                width: 92%;
+            }
+            .hero-content {
+                max-width: 340px;
+            }
             .hero h1 {
                 font-size: 2.35rem;
             }
@@ -319,12 +372,15 @@
 
     <!-- Welcoming Hero Area -->
     <header class="hero">
-        <h1>EXOARK CLUSTER NETWORK</h1>
-        <p>Welcome! Join the EXOARK community through Discord, help the cluster grow through voting and keep the worlds alive through your support.</p>
-		<p>Scroll down for cluster rates.</p>
+        <img class="hero-dino rex" src="REX.png" alt="" aria-hidden="true">
+        <img class="hero-dino bird" src="BIRD.png" alt="" aria-hidden="true">
+        <div class="hero-content">
+            <h1>EXOARK CLUSTER</h1>
+            <p>ARK: Survival Ascended PvP server cluster with no wipes.</p>
+		    <p>Scroll down for cluster rates.</p>
         
-        <!-- Interactive Button Container -->
-        <div class="hero-buttons">
+            <!-- Interactive Button Container -->
+            <div class="hero-buttons">
             
             <!-- Discord Button (Perfect Version) -->
             <a href="https://discord.gg/tYPSwc6dmT" target="_blank" rel="noopener noreferrer" class="brand-btn discord-btn">
@@ -346,6 +402,7 @@
             </a>
 
 
+            </div>
         </div>
     </header>
 
