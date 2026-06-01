@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RNY4K8HT7"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -372,7 +372,6 @@
             .hero-dino.rex {
                 left: -10%;
                 width: 105%;
-                opacity: 0.84;
                 transform: translateY(-45%);
             }
             .hero-dino.bird {
@@ -601,7 +600,7 @@
                     <li>Prime Fish Meat: <span>30 / stack</span></li>
                     <li>Raw Mutton: <span>30 / stack</span></li>
                     <li>Giant Bee Honey: <span>30 / stack</span></li>
-                    <li>Organic Polymer: <span>50 / stack</span></li>
+                    <li>Organic Polymer: <span>300 / stack</span></li>
                     <li>Tree Sap: <span>30 / stack</span></li>
                 </ul>
             </div>
@@ -691,11 +690,12 @@ async function fetchServerStatus(id) {
             connectEl.classList.remove('disabled');
             connectEl.removeAttribute('aria-disabled');
         }
-        if (serverAddress && copyIpEl) {
-            copyIpEl.dataset.ip = serverAddress;
+        if (serverAddress && attrs.port && copyIpEl) {
+            const serverEndpoint = `${serverAddress}:${attrs.port}`;
+            copyIpEl.dataset.ip = serverEndpoint;
             copyIpEl.disabled = false;
             copyIpEl.textContent = 'Copy IP';
-            copyIpEl.title = `Copy ${serverAddress}`;
+            copyIpEl.title = `Copy ${serverEndpoint}`;
         }
     } catch (error) {
         console.error(`Error loading metrics data for ID ${id}:`, error);
