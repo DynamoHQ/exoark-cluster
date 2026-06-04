@@ -106,6 +106,7 @@
         /* Shared base styling for wide brand buttons */
         .brand-btn {
             height: 52px;
+            min-width: 205px;
             padding: 0 32px;
             display: inline-flex;
             justify-content: center;
@@ -186,35 +187,97 @@
             margin-bottom: 60px; 
         }
         .card { 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             background: rgba(31, 40, 51, 0.65); /* Changed to 65% transparency */
             backdrop-filter: blur(5px); /* Blurs the background dinos behind the card for readability */
             border: 1px solid #2f3b4c; 
             border-radius: 8px; 
-            padding: 25px; 
+            padding: 25px 25px 12px 25px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             transition: transform 0.2s;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 70px;
+            background-image:
+                linear-gradient(rgba(31, 40, 51, 0.22), rgba(31, 40, 51, 0.72)),
+                var(--map-banner);
+            background-position: center;
+            background-size: cover;
+            opacity: 0.38;
+            pointer-events: none;
+        }
+        .card > * {
+            position: relative;
+            z-index: 1;
         }
         .card:hover {
             transform: translateY(-2px);
             border-color: #66fcf1;
         }
-        .card h3 { 
-            margin-bottom: 15px; 
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin: -25px -25px 18px -25px;
+            border-bottom: 1px solid #2f3b4c;
+            padding: 25px 25px 13px 25px;
+        }
+        .card h3 {
             color: #fff;
             font-size: 1.3rem;
-            border-bottom: 1px solid #2f3b4c; 
-            padding-bottom: 10px; 
         }
+        .card h3 a {
+            display: inline-block;
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .card h3 a:hover {
+            color: #66fcf1;
+            text-shadow: 0 0 12px rgba(102, 252, 241, 0.25);
+            transform: scale(1.04);
+        }
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: #f1c40f;
+            box-shadow: 0 0 12px rgba(241, 196, 15, 0.35);
+            cursor: help;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .status-dot:hover { transform: scale(1.22); }
+        .status-dot.online { background: #2ecc71; box-shadow: 0 0 12px rgba(46, 204, 113, 0.4); }
+        .status-dot.offline { background: #e74c3c; box-shadow: 0 0 12px rgba(231, 76, 60, 0.35); }
         .info-row {
             display: flex;
             justify-content: space-between;
             margin: 8px 0;
             font-size: 0.95rem;
         }
+        .survivor-row {
+            margin: 10px 0 8px 0;
+        }
         .label { color: #b4c0ca; }
         .players {
             color: #d8e3e7;
             font-weight: 700;
+            font-size: 1.04rem;
+        }
+        .server-detail {
+            min-height: 20px;
+            color: #9aa8b3;
+            font-size: 0.88rem;
         }
         .current-players.low {
             color: #f1c40f;
@@ -234,44 +297,46 @@
         .loading { color: #f1c40f; font-style: italic; }
         .card-actions {
             display: flex;
-            gap: 8px;
-            margin-top: 16px;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: auto;
+            padding-top: 14px;
         }
-        .connect-link,
         .copy-ip-btn {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 34px;
+            min-height: 30px;
             padding: 0 12px;
             border-radius: 6px;
             border: 1px solid rgba(102, 252, 241, 0.24);
             background: rgba(102, 252, 241, 0.045);
             color: rgba(102, 252, 241, 0.86);
             text-decoration: none;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 650;
             transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
         }
-        .connect-link {
-            flex: 1;
-        }
         .copy-ip-btn {
-            flex: 0 0 auto;
+            flex: 1;
             cursor: pointer;
             font-family: inherit;
         }
-        .connect-link:hover,
         .copy-ip-btn:hover {
             border-color: rgba(102, 252, 241, 0.55);
             background: rgba(102, 252, 241, 0.1);
             color: #ffffff;
             transform: translateY(-1px);
         }
-        .connect-link.disabled,
         .copy-ip-btn:disabled {
             pointer-events: none;
             opacity: 0.45;
+        }
+        .copy-help {
+            color: #7d8a95;
+            font-size: 0.72rem;
+            line-height: 1.1;
+            text-align: center;
         }
 
         /* Cluster Settings Panels */
@@ -463,101 +528,101 @@
         <div class="server-grid">
             
             <!-- 1. Scorched Earth Card -->
-            <div class="card" id="srv-38554916">
-                <h3>Scorched Earth</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554916" style="--map-banner: url('Scorched%20Earth.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554916" target="_blank" rel="noopener noreferrer">Scorched Earth</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 2. Astraeos Card -->
-            <div class="card" id="srv-38554420">
-                <h3>Astraeos</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554420" style="--map-banner: url('Astraeos.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554420" target="_blank" rel="noopener noreferrer">Astraeos</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 3. Aberration Card -->
-            <div class="card" id="srv-38554918">
-                <h3>Aberration</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554918" style="--map-banner: url('Aberration.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554918" target="_blank" rel="noopener noreferrer">Aberration</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 4. Ragnarok Card -->
-            <div class="card" id="srv-38530969">
-                <h3>Ragnarok</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38530969" style="--map-banner: url('Ragnarok.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38530969" target="_blank" rel="noopener noreferrer">Ragnarok</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 5. The Center Card -->
-            <div class="card" id="srv-38554917">
-                <h3>The Center</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554917" style="--map-banner: url('The%20Center.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554917" target="_blank" rel="noopener noreferrer">The Center</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 6. The Island Card -->
-            <div class="card" id="srv-38554919">
-                <h3>The Island</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554919" style="--map-banner: url('The%20Island.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554919" target="_blank" rel="noopener noreferrer">The Island</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 7. Valguero Card -->
-            <div class="card" id="srv-38554445">
-                <h3>Valguero</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554445" style="--map-banner: url('Valguero.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554445" target="_blank" rel="noopener noreferrer">Valguero</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 8. Lost Colony Card -->
-            <div class="card" id="srv-38554920">
-                <h3>Lost Colony</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554920" style="--map-banner: url('Lost%20Colony.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554920" target="_blank" rel="noopener noreferrer">Lost Colony</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
             <!-- 9. Extinction Card -->
-            <div class="card" id="srv-38554921">
-                <h3>Extinction</h3>
-                <div class="info-row"><span class="label">Status:</span><span class="status loading">Connecting...</span></div>
-                <div class="info-row"><span class="label">Players:</span><span class="players">-- / --</span></div>
+            <div class="card" id="srv-38554921" style="--map-banner: url('Extinction.png');">
+                <div class="card-header"><h3><a href="https://www.battlemetrics.com/servers/arksa/38554921" target="_blank" rel="noopener noreferrer">Extinction</a></h3><span class="status-dot loading" title="Checking server status"></span></div>
+                <div class="survivor-row"><span class="players">Checking survivors...</span></div>
+                <div class="server-detail">PvP • No wipes</div>
                 <div class="card-actions">
-                    <a class="connect-link disabled" href="#" aria-disabled="true">Loading connect link...</a>
-                    <button class="copy-ip-btn" type="button" disabled>Copy IP</button>
+                    <button class="copy-ip-btn" type="button" disabled>Copy Join Command</button>
+                    <div class="copy-help">Paste into ASA console</div>
                 </div>
             </div>
 
@@ -578,7 +643,7 @@
                     <li>Farming Multiplier: <span>3x</span></li>
                     <li>Max Wild Dino Level: <span>150</span></li>
                     <li>Max Wyvern Level: <span>190</span></li>
-					<li>Item Stat Clamping: <span>Disabled</span></li>
+                    <li>Item Stat Clamping: <span>Disabled</span></li>
                 </ul>
                 
                 <!-- Breeding Settings -->
@@ -651,9 +716,8 @@ async function fetchServerStatus(id) {
     const cardEl = document.getElementById(`srv-${id}`);
     if (!cardEl) return;
 
-    const statusEl = cardEl.querySelector('.status');
+    const statusEl = cardEl.querySelector('.status-dot');
     const playersEl = cardEl.querySelector('.players');
-    const connectEl = cardEl.querySelector('.connect-link');
     const copyIpEl = cardEl.querySelector('.copy-ip-btn');
 
     try {
@@ -668,8 +732,8 @@ async function fetchServerStatus(id) {
 
         const isOnline = attrs.status === 'online';
 
-        statusEl.textContent = isOnline ? 'Online' : 'Offline';
-        statusEl.className = `status ${isOnline ? 'online' : 'offline'}`;
+        statusEl.className = `status-dot ${isOnline ? 'online' : 'offline'}`;
+        statusEl.title = isOnline ? 'Server online' : 'Server offline';
 
         let playerActivityClass = '';
         if (attrs.players >= 15) {
@@ -681,54 +745,41 @@ async function fetchServerStatus(id) {
         }
 
         const currentPlayersClass = `current-players ${playerActivityClass}`.trim();
-        playersEl.innerHTML = `<span class="${currentPlayersClass}">${attrs.players}</span> / ${attrs.maxPlayers}`;
+        const survivorLabel = attrs.players === 1 ? 'Survivor' : 'Survivors';
+        playersEl.innerHTML = `<span class="${currentPlayersClass}">${attrs.players}</span> ${survivorLabel} online`;
         const serverAddress = attrs.ip || attrs.address;
-        if (serverAddress && attrs.port && connectEl) {
-            const connectUrl = `steam://connect/${serverAddress}:${attrs.port}`;
-            connectEl.href = connectUrl;
-            connectEl.textContent = 'Connect via Steam';
-            connectEl.title = `Connect to ${serverAddress}:${attrs.port}`;
-            connectEl.classList.remove('disabled');
-            connectEl.removeAttribute('aria-disabled');
-        }
         if (serverAddress && attrs.port && copyIpEl) {
-            const serverEndpoint = `${serverAddress}:${attrs.port}`;
-            copyIpEl.dataset.ip = serverEndpoint;
+            const consoleCommand = `open ${serverAddress}:${attrs.port}`;
+            copyIpEl.dataset.command = consoleCommand;
             copyIpEl.disabled = false;
-            copyIpEl.textContent = 'Copy IP';
-            copyIpEl.title = `Copy ${serverEndpoint}`;
+            copyIpEl.textContent = 'Copy Join Command';
+            copyIpEl.title = `Copy ${consoleCommand}`;
         }
     } catch (error) {
         console.error(`Error loading metrics data for ID ${id}:`, error);
-        statusEl.textContent = 'Unavailable';
-        statusEl.className = 'status offline';
-        playersEl.textContent = '-- / --';
+        statusEl.className = 'status-dot offline';
+        statusEl.title = 'Server status unavailable';
+        playersEl.textContent = 'Survivor count unavailable';
         playersEl.className = 'players';
-        if (connectEl) {
-            connectEl.href = '#';
-            connectEl.textContent = 'Connect unavailable';
-            connectEl.classList.add('disabled');
-            connectEl.setAttribute('aria-disabled', 'true');
-        }
         if (copyIpEl) {
-            copyIpEl.dataset.ip = '';
+            copyIpEl.dataset.command = '';
             copyIpEl.disabled = true;
-            copyIpEl.textContent = 'Copy IP';
-            copyIpEl.title = 'IP unavailable';
+            copyIpEl.textContent = 'Copy Join Command';
+            copyIpEl.title = 'Console command unavailable';
         }
     }
 }
 
         async function copyServerIp(buttonEl) {
-            const ip = buttonEl.dataset.ip;
-            if (!ip) return;
+            const command = buttonEl.dataset.command;
+            if (!command) return;
 
             try {
                 if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(ip);
+                    await navigator.clipboard.writeText(command);
                 } else {
                     const tempInput = document.createElement('input');
-                    tempInput.value = ip;
+                    tempInput.value = command;
                     document.body.appendChild(tempInput);
                     tempInput.select();
                     document.execCommand('copy');
@@ -737,13 +788,13 @@ async function fetchServerStatus(id) {
 
                 buttonEl.textContent = 'Copied';
                 setTimeout(() => {
-                    buttonEl.textContent = 'Copy IP';
+                    buttonEl.textContent = 'Copy Join Command';
                 }, 1400);
             } catch (error) {
                 console.error('Error copying server IP:', error);
                 buttonEl.textContent = 'Copy failed';
                 setTimeout(() => {
-                    buttonEl.textContent = 'Copy IP';
+                    buttonEl.textContent = 'Copy Join Command';
                 }, 1800);
             }
         }
