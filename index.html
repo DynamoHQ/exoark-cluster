@@ -13,12 +13,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExoArk.eu | ARK: Survival Ascended PvP Cluster</title>
-    <meta name="description" content="ExoArk.eu is an ARK: Survival Ascended PvP cluster with no wipes, live server status, player counts, and console join commands.">
+    <meta name="description" content="ExoArk.eu is an ARK: Survival Ascended PvP cluster with no wipes. The cluster is currently on summer break and is planned to return in autumn.">
     <link rel="canonical" href="https://exoark.eu/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="ExoArk.eu">
     <meta property="og:title" content="ExoArk.eu | ARK: Survival Ascended PvP Cluster">
-    <meta property="og:description" content="ARK: Survival Ascended PvP cluster with no wipes, live server status, player counts, and console join commands.">
+    <meta property="og:description" content="ARK: Survival Ascended PvP cluster with no wipes. Currently on summer break, planned to return in autumn.">
     <meta property="og:url" content="https://exoark.eu/">
     <meta property="og:image" content="https://exoark.eu/android-chrome-512x512.png">
     <meta property="og:image:secure_url" content="https://exoark.eu/android-chrome-512x512.png">
@@ -28,7 +28,7 @@
     <meta property="og:image:alt" content="ExoArk.eu ARK server cluster logo">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ExoArk.eu | ARK: Survival Ascended PvP Cluster">
-    <meta name="twitter:description" content="ARK: Survival Ascended PvP cluster with no wipes, live server status, player counts, and console join commands.">
+    <meta name="twitter:description" content="ARK: Survival Ascended PvP cluster with no wipes. Currently on summer break, planned to return in autumn.">
     <meta name="twitter:image" content="https://exoark.eu/android-chrome-512x512.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -138,6 +138,29 @@
         }
         .brand-btn:hover {
             transform: translateY(-3px);
+        }
+
+        .summer-break-notice {
+            max-width: 680px;
+            margin-top: 26px;
+            padding: 16px 20px;
+            border: 1px solid rgba(241, 196, 15, 0.28);
+            border-radius: 8px;
+            background: rgba(21, 28, 36, 0.72);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(5px);
+        }
+        .summer-break-notice strong {
+            display: block;
+            color: #f1c40f;
+            font-size: 1rem;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .summer-break-notice span {
+            color: #d8e3e7;
+            font-size: 0.96rem;
         }
 
         /* Discord Button Styling (Kept exactly as you like it) */
@@ -276,6 +299,7 @@
         .status-dot:hover { transform: scale(1.22); }
         .status-dot.online { background: #2ecc71; box-shadow: 0 0 12px rgba(46, 204, 113, 0.4); }
         .status-dot.offline { background: #e74c3c; box-shadow: 0 0 12px rgba(231, 76, 60, 0.35); }
+        .status-dot.paused { background: #f1c40f; box-shadow: 0 0 12px rgba(241, 196, 15, 0.38); }
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -533,6 +557,10 @@
 
 
             </div>
+            <div class="summer-break-notice" id="hero-announcement">
+                <strong id="hero-announcement-title">Summer Break</strong>
+                <span id="hero-announcement-text">The ExoArk.eu cluster is paused for summer and planned to return in autumn. Discord remains open for updates and community news.</span>
+            </div>
         </div>
     </header>
 
@@ -541,7 +569,7 @@
     <!-- Main Content Container -->
     <main class="container">
         
-        <h2 class="section-title">Live Server Cluster Status</h2>
+        <h2 class="section-title" id="cluster-status-title">Cluster Summer Break Status</h2>
         <div class="server-grid">
             
             <!-- 1. Scorched Earth Card -->
@@ -729,6 +757,50 @@
             '39360346', '39360378', '39360342'
         ];
 
+        const showHeroAnnouncement = true;
+        const heroAnnouncementTitle = 'Summer Break';
+        const heroAnnouncementText = 'The ExoArk.eu cluster is paused for summer and planned to return in autumn. Discord remains open for updates and community news.';
+        const clusterPaused = true;
+
+        function applyHeroAnnouncement() {
+            const announcementEl = document.getElementById('hero-announcement');
+            const titleEl = document.getElementById('hero-announcement-title');
+            const textEl = document.getElementById('hero-announcement-text');
+
+            if (!announcementEl) return;
+
+            announcementEl.hidden = !showHeroAnnouncement;
+            if (titleEl) titleEl.textContent = heroAnnouncementTitle;
+            if (textEl) textEl.textContent = heroAnnouncementText;
+        }
+
+        function applyClusterPause() {
+            document.querySelectorAll('.card').forEach((cardEl) => {
+                const statusEl = cardEl.querySelector('.status-dot');
+                const playersEl = cardEl.querySelector('.players');
+                const detailEl = cardEl.querySelector('.server-detail');
+                const copyIpEl = cardEl.querySelector('.copy-ip-btn');
+
+                if (statusEl) {
+                    statusEl.className = 'status-dot paused';
+                    statusEl.title = 'Cluster paused for summer break';
+                }
+                if (playersEl) {
+                    playersEl.textContent = 'Cluster on summer break';
+                    playersEl.className = 'players';
+                }
+                if (detailEl) {
+                    detailEl.textContent = 'Planned return in autumn';
+                }
+                if (copyIpEl) {
+                    copyIpEl.dataset.command = '';
+                    copyIpEl.disabled = true;
+                    copyIpEl.textContent = 'Paused for summer';
+                    copyIpEl.title = 'Join commands will return when the cluster reopens';
+                }
+            });
+        }
+
 async function fetchServerStatus(id) {
     const cardEl = document.getElementById(`srv-${id}`);
     if (!cardEl) return;
@@ -821,9 +893,21 @@ async function fetchServerStatus(id) {
             const yearEl = document.getElementById('current-year');
             if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
 
+            applyHeroAnnouncement();
+
+            const statusTitleEl = document.getElementById('cluster-status-title');
+            if (statusTitleEl) {
+                statusTitleEl.textContent = clusterPaused ? 'Cluster Summer Break Status' : 'Live Server Cluster Status';
+            }
+
             document.querySelectorAll('.copy-ip-btn').forEach((buttonEl) => {
                 buttonEl.addEventListener('click', () => copyServerIp(buttonEl));
             });
+
+            if (clusterPaused) {
+                applyClusterPause();
+                return;
+            }
 
             // Stagger requests slightly to keep browser connections stable
             serverIds.forEach((id, index) => {
